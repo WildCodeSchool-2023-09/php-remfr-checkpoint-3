@@ -14,7 +14,9 @@ class MapManager
     {
         $tile = $this->tileRepository->findOneBy(['coordX' => $x, 'coordY' => $y]);
         
-        if ($x !== $tile->getCoordX() || $y !== $tile->getCoordY()) {
+        if (empty($tile)) {
+            return false;
+        } else {
             return true;
         }
     }

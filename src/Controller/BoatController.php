@@ -35,22 +35,20 @@ class BoatController extends AbstractController
         $move = $boatRepository->findOneBy([]);
         
         
-            if ($direction === "N") {
+            if ($direction === "N" && $mapManager->tileExists($move->getCoordX(), $move->getCoordY() - 1)) {
                 $move->setCoordY($move->getCoordY() - 1);
-            } elseif ( $direction === "S") {
+            } elseif ( $direction === "S" && $mapManager->tileExists($move->getCoordX(), $move->getCoordY() + 1)) {
                 $move->setCoordY($move->getCoordY() + 1);
-            } elseif ($direction === "W") {
+            } elseif ($direction === "W" && $mapManager->tileExists($move->getCoordX() - 1, $move->getCoordY())) {
                 $move->setCoordX($move->getCoordX() - 1);
-            } elseif ($direction === 'E') {
+            } elseif ($direction === 'E' && $mapManager->tileExists($move->getCoordX() + 1, $move->getCoordY())) {
                 $move->setCoordX($move->getCoordX() + 1);
+            } else {
+                $this->addFlash('warning', 'Oups!');
             }
-                $entityManager->flush();
-        
-        if ($mapManager->tileExists($move->getCoordX(), $move->getCoordY())) {
-            $this->addFlash('warning', 'Oups vous etes hors map!');
-        } else {
+
+            $entityManager->flush();
             
-        }
-        return $this->redirectToRoute('map');
+        return $this->redirectToRoute('map', ['move' => $move]);
     }
 }
