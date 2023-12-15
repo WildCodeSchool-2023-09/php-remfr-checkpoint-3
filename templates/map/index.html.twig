@@ -62,6 +62,20 @@
 						Navigation
 					</h2>
 					{# Add here N/S/E/W buttons #}
+						<button>
+						<a href="{{ path('movedirection', {'direction': 'N'}) }}">N</a>
+						</button>
+						<button>
+							<a href="{{ path('movedirection', {'direction': 'S'}) }}">S</a>
+						</button>
+
+						<button>
+							<a href="{{ path('movedirection', {'direction': 'E'}) }}">E</a>
+						</button>
+
+						<button>
+							<a href="{{ path('movedirection', {'direction': 'W'}) }}">W</a>
+						</button>
 				</div>
 			</div>
 		</div>
