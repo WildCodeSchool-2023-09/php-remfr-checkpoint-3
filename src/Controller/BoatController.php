@@ -52,7 +52,6 @@ class BoatController extends AbstractController
                 break;
         }
 
-        // Vérifie si la case existe
         if (!$mapManager->tileExiste($boat->getCoordX(), $boat->getCoordY(), $tileRepository)) {
             $this->addFlash('danger', 'Cette case n\'existe pas !');
             $entityManager->refresh($boat);
@@ -60,7 +59,10 @@ class BoatController extends AbstractController
             $entityManager->flush();
         }
         
-        // Vérifie si la direction spécifiée est valide
+        if ($mapManager->checkTreasure($boat->getCoordX(), $boat->getCoordY(), $tileRepository)) {
+            $this->addFlash('success', 'Vous avez trouvé le trésor !');
+        }
+
         if (!in_array($direction, $validDirections)) {
             return $this->redirectToRoute('404');
         }

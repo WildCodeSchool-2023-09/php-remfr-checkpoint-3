@@ -77,4 +77,9 @@ class Tile
 
         return $this;
     }
+
+    public function getAsTreasure()
+    {
+        return $this->asTreasure;
+    }
 }
