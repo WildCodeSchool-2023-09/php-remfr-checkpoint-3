@@ -40,10 +40,8 @@ class BoatController extends AbstractController
        
         $boatY = $boat->getCoordY();
         $boatX = $boat->getCoordX();
-        //$tiles = $tileRepository->findAll();
         $mapManager = new MapManager($tileRepository);
        
-
         if(in_array($direction, $this->cardinal)){
             if($direction === 'N'){
                 $boat->setCoordY($boatY -= 1);
@@ -58,13 +56,14 @@ class BoatController extends AbstractController
                 $boat->setCoordX($boatX -= 1);
             }
         }
-        
+       
         if(($mapManager->tileExists($boat->getCoordX(), $boat->getCoordY())) === true) {
            $entityManager->flush();
         }
         else{
             $this->addFlash('danger', 'Don\'t go there, you\'ll get lost!');
         }
+        
         
 
         return $this->redirectToRoute('map');

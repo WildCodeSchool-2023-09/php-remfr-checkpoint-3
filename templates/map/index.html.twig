@@ -55,6 +55,11 @@
 						Information
 					</h2>
 					{# Add here informations about current ship position #}
+					<h3>Boat's Coordinates</h3>
+					<p>{{boat.coordX}}, {{boat.coordY}}</p>
+					<br>
+					<h3>Current Tile's type</h3>
+					<p>{{map[boat.coordX][boat.coordY].type}}</p>
 				</div>
 				<div
 					class="navigation">
