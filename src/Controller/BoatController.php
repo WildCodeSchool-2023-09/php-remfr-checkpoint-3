@@ -29,7 +29,7 @@ class BoatController extends AbstractController
         return $this->redirectToRoute('map');
     }
 
-    #[Route('/direction/{direction}', methods: ['GET'], requirements: ["direction" => "[N]|[S]|[W]|[E]"], name:'direction')]
+    #[Route('/direction/{direction}', methods: ['GET'], requirements: ["direction" => "[N]|[S]|[E]|[W]"], name:'moveDirection')]
     public function moveDirection(
         string $direction,
         BoatRepository $boatRepository,
@@ -61,6 +61,7 @@ class BoatController extends AbstractController
 
         $entityManager->flush();
         
-        return $this->redirectToRoute('map');
+        return $this->render('map/index.html.twig', [
+            'boat' => $boat]);
     }
 }
