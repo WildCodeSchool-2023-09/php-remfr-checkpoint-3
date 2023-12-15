@@ -30,7 +30,7 @@ class BoatController extends AbstractController
         $entityManager->flush();
 
         if($mapManager->checkTreasure($boat)) {
-            $this->addFlash("success", "Le capitaine Jack Sparrow à trouvé le trésor !");
+            $this->addFlash("success", "Le capitaine Jack Sparrow à trouvé le trésor de Rackham le Rouge !");
         }
         
         return $this->redirectToRoute('map');

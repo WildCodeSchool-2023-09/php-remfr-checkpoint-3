@@ -92,3 +92,27 @@
 h2 {
     font-size: 1.3em;
 }
+
+.navigation .direction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    
+}
+
+.navigation .direction-N-S {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.navigation a {
+    color: white;
+    text-decoration: none;
+}
+
+.navigation a:hover {
+    color: #c99143 ;
+}
