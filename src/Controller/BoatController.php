@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BoatRepository;
+use App\Repository\TileRepository;
 use App\Service\MapManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ class BoatController extends AbstractController
         int $x,
         int $y,
         BoatRepository $boatRepository,
+        TileRepository $tileRepository,
         EntityManagerInterface $entityManager
     ): Response {
         $boat = $boatRepository->findOneBy([]);
@@ -33,7 +35,6 @@ class BoatController extends AbstractController
     public function moveDirection(
         string $direction, 
         BoatRepository $boatRepository,
-        EntityManagerInterface $entityManager,
         MapManager $mapManager)
     {
         $boat = $boatRepository->findOneBy([]);
@@ -43,37 +44,34 @@ class BoatController extends AbstractController
         switch ($direction) {
             case "N" : 
                 if($mapManager->tileExists(($directionX), ($directionY - 1))) {
-                    $boat->setCoordY($directionY - 1);
+                    $directionY -= 1;
                 } else {
                     $this->addFlash("warning", "La tuile n'existe pas");
                 }
                 break;
             case "S" :
                 if($mapManager->tileExists(($directionX), ($directionY + 1))) {
-                    $boat->setCoordY($directionY + 1);
+                    $directionY += 1;
                 } else {
                     $this->addFlash("warning", "La tuile n'existe pas");
                 }
                 break;
             case "E" :
                 if($mapManager->tileExists(($directionX + 1), ($directionY))) {
-                    $boat->setCoordX($directionX + 1);
+                    $directionX += 1;
                 } else {
                     $this->addFlash("warning", "La tuile n'existe pas");
                 }
                 break;
             case "W" :
                 if($mapManager->tileExists(($directionX - 1), ($directionY))) {
-                    $boat->setCoordX($directionX - 1);
+                    $directionX -= 1;
                 } else {
                     $this->addFlash("warning", "La tuile n'existe pas");
                 }
                 break;
         }
 
-        $entityManager->persist($boat);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('map');
+        return $this->redirectToRoute('moveBoat', ['x' => $directionX, 'y' => $directionY]);
     }
 }
