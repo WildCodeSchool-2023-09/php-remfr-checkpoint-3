@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Boat;
 use App\Entity\Tile;
 use App\Repository\TileRepository;
 
@@ -29,5 +30,17 @@ class MapManager
         $randomTileIsland = array_rand($tilesIsland);
 
         return $tilesIsland[$randomTileIsland];
+    }
+
+    public function checkTreasure(Boat $boat)
+    {
+
+        $tile = $this->tileRepository->findOneBy(['coordX' => $boat->getCoordX(), 'coordY' => $boat->getCoordY()]);
+        
+        if($tile->isHasTreasure()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
