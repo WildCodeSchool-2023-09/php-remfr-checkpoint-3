@@ -9,6 +9,7 @@ use App\Entity\Tile;
 use App\Repository\BoatRepository;
 use App\Repository\TileRepository;
 
+
 class MapController extends AbstractController
 {
     #[Route('/map', name: 'map')]
@@ -27,4 +28,5 @@ class MapController extends AbstractController
             'boat' => $boat,
         ]);
     }
+
 }

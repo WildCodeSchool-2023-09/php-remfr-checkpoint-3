@@ -1,5 +1,9 @@
 <?php
 
+// Mettre a jour la base de donnée
+// php bin/console make:migration
+// php bin/console doctrine:migrations:migrate
+
 namespace App\Entity;
 
 use App\Repository\TileRepository;
@@ -21,6 +25,9 @@ class Tile
 
     #[ORM\Column]
     private ?int $coordY = null;
+
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
+    private bool $hasTreasure = false;
 
     public function getId(): ?int
     {
@@ -62,4 +69,17 @@ class Tile
 
         return $this;
     }
+
+    public function hasTreasure(): bool
+    {
+        return $this->hasTreasure;
+    }
+
+    public function setHasTreasure(bool $hasTreasure): self
+    {
+        $this->hasTreasure = $hasTreasure;
+
+        return $this;
+    }
+
 }
