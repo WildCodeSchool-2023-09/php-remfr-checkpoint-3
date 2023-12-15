@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Boat;
+use App\Service\MapManager;
+use App\Repository\TileRepository;
 
 #[Route('/boat')]
 class BoatController extends AbstractController
@@ -32,11 +34,15 @@ class BoatController extends AbstractController
 
     #[Route('/direction/{direction}', name: 'moveDirection', methods: ['GET'])]
     public function moveDirection(string $direction, BoatRepository $boatRepository,
-    EntityManagerInterface $entityManager): Response 
+    EntityManagerInterface $entityManager, TileRepository $tileRepository): Response 
     {
         $boat = $boatRepository->findOneBy([]);
+       
         $boatY = $boat->getCoordY();
         $boatX = $boat->getCoordX();
+        //$tiles = $tileRepository->findAll();
+        $mapManager = new MapManager($tileRepository);
+       
 
         if(in_array($direction, $this->cardinal)){
             if($direction === 'N'){
@@ -52,7 +58,14 @@ class BoatController extends AbstractController
                 $boat->setCoordX($boatX -= 1);
             }
         }
-        $entityManager->flush();
+        
+        if(($mapManager->tileExists($boat->getCoordX(), $boat->getCoordY())) === true) {
+           $entityManager->flush();
+        }
+        else{
+            $this->addFlash('danger', 'Don\'t go there, you\'ll get lost!');
+        }
+        
 
         return $this->redirectToRoute('map');
     }
