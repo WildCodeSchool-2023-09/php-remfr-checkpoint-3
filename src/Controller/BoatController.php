@@ -52,40 +52,28 @@ class BoatController extends AbstractController
          * et vérification que la tuile existe sinon afficher un message */
         switch ($direction) {
             case 'N':
-                if($mapManager->tileExists(($x), ($y - 1))) {
                     $boat->setCoordY($boat->getCoordY() - 1);
-                } else {
-                    $this->addFlash("warning", "Tile doesn't exist");
-                }
-
                 break;
             case 'S':
-                if($mapManager->tileExists(($x), ($y + 1))) {
                     $boat->setCoordY($boat->getCoordY() + 1);
-                } else {
-                    $this->addFlash("warning", "Tile doesn't exist");
-                }
                 break;
             case 'E':
-                if($mapManager->tileExists(($x + 1), ($y))) {
                     $boat->setCoordX($boat->getCoordX() + 1);
-                } else {
-                    $this->addFlash("warning", "Tile doesn't exist");
-                }
                 break;
             case 'W':
-                if($mapManager->tileExists(($x - 1), ($y))) {
                     $boat->setCoordX($boat->getCoordX() - 1);
-                } else {
-                    $this->addFlash("warning", "Tile doesn't exist");
-                }
                 break;
         }
-        $entityManager->persist($boat);
-        $entityManager->flush();
+        if($mapManager->tileExists($boat->getCoordX(), $boat->getCoordY())) {
+            $entityManager->flush();
+            $this->addFlash("sucess", "Tile exist");
+        } else {
+            $this->addFlash("warning", "Tile doesn't exist");
+        }
+        
 
         /** Check for treasure after each moves */
-        if ($this->$mapManager->checkTreasure($boat)) {
+        if ($mapManager->checkTreasure($boat)) {
             $this->addFlash('success', 'Congratulations, you found the treasure!');
         }
 

@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Repository\TileRepository;
 use App\Entity\Boat;
-use App\Entity\Tile;
 
 class MapManager
 {
@@ -40,10 +39,8 @@ class MapManager
         /** Check that this boat is on the tile with the treasure */
         $boatCoordX = $boat->getCoordX();
         $boatCoordY = $boat->getCoordY();
-
         $currentTile = $this->tileRepository->findOneBy(['coordX' => $boatCoordX, 'coordY' => $boatCoordY]);
-
-        if ($currentTile->getHasTreasure()) {
+        if ($currentTile?->getHasTreasure()) {
             return true;
         }
         return false;
