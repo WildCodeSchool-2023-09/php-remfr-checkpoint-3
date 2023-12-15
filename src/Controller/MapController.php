@@ -27,4 +27,15 @@ class MapController extends AbstractController
             'boat' => $boat,
         ]);
     }
+
+    #[Route('/start', name: 'start')]
+    public function start(BoatRepository $boatRepository, TileRepository $tileRepository): Response
+    {
+        $boat = $boatRepository->findOneBy([]);
+
+        return $this->render('map/index.html.twig', [
+            'map'  => $map ?? [],
+            'boat' => $boat,
+        ]);
+    }
 }
