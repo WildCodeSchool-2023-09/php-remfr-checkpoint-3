@@ -57,10 +57,10 @@ class MapController extends AbstractController
             $entityManager->persist($tile);
             $entityManager->flush();
         }
-        $randomTileTreasure = $mapManager->getRandomIsland();
+        $treasureIsland = $mapManager->getRandomIsland();
 
-        $randomTileTreasure->setHasTreasure(true);
-        $entityManager->persist($randomTileTreasure);
+        $treasureIsland->setHasTreasure(true);
+        $entityManager->persist($treasureIsland);
         $entityManager->flush();
 
         return $this->redirectToRoute('map');
