@@ -19,4 +19,17 @@ class MapManager
 
         return $tile !== null;
     }
+
+    public function getRandomIsland()
+    {
+        $islandTiles = $this->tileRepository->findBy(['type' => 'island']);
+
+        if (empty($islandTiles)) {
+            return null;
+        }
+
+        $randomIndex = array_rand($islandTiles);
+        return $islandTiles[$randomIndex];
+
+    }
 }
