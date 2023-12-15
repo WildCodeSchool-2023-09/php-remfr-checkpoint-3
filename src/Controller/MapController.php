@@ -22,9 +22,16 @@ class MapController extends AbstractController
 
         $boat = $boatRepository->findOneBy([]);
 
+        //trouver le type de tuile sur laquelle se trouve le bateau
+        $boatCoordX = $boat->getCoordX();
+        $boatCoordY = $boat->getCoordY();
+        $boatTile = $map[$boatCoordX][$boatCoordY]->getType();
+
+
         return $this->render('map/index.html.twig', [
             'map'  => $map ?? [],
             'boat' => $boat,
+            'boatTile' => $boatTile,
         ]);
     }
 }
