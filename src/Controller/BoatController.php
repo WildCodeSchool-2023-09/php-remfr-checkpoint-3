@@ -48,7 +48,8 @@ class BoatController extends AbstractController
             throw $this->createNotFoundException('No boat found');
         }
 
-        /** Mise à jour de la position du bateau en se basant sur la direction */
+        /** Mise à jour de la position du bateau en se basant sur la direction 
+         * et vérification que la tuile existe sinon afficher un message */
         switch ($direction) {
             case 'N':
                 if($mapManager->tileExists(($x), ($y - 1))) {

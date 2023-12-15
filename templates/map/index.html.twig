@@ -58,6 +58,12 @@
 					    <p>Current Ship Position:</p>
     					<p>X Coordinate: {{ boat.coordX }}</p>
     					<p>Y Coordinate: {{ boat.coordY }}</p>
+
+						{% if map[boat.coordX][boat.coordY] is defined %}
+        				<p>Type of Tile: {{ map[boat.coordX][boat.coordY].type }}</p>
+    					{% else %}
+        				<p>Tile information not available for this location</p>
+    					{% endif %}
 				</div>
 				<div
 					class="navigation">
