@@ -11,6 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/boat')]
 class BoatController extends AbstractController
 {
+
+    public const DIRECTIONS = [
+        'N' => [0, -1],
+        'S' => [0, 1],
+        'E' => [1, 0],
+        'W' => [-1, 0],
+    ];
+
     #[Route('/move/{x<\d+>}/{y<\d+>}', name: 'moveBoat')]
     public function moveBoat(
         int $x,
@@ -26,5 +34,11 @@ class BoatController extends AbstractController
         $entityManager->flush();
         
         return $this->redirectToRoute('map');
+    }
+
+    public function moveDirection () {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+           
+        }
     }
 }
