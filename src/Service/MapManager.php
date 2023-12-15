@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Tile;
 use App\Repository\TileRepository;
 
 class MapManager
@@ -19,5 +20,14 @@ class MapManager
         }
 
         return $tileExist;
+    }
+
+    public function getRandomIsland(): Tile
+    {
+        $tilesIsland = $this->tileRepository->findBy(["type" => "island"]);
+
+        $randomTileIsland = array_rand($tilesIsland);
+
+        return $tilesIsland[$randomTileIsland];
     }
 }
