@@ -21,7 +21,10 @@ class TileRepository extends ServiceEntityRepository
         parent::__construct($registry, Tile::class);
     }
 
+    public function tileExists(int $x, int $y): bool
+    {
 
+    }
 //    /**
 //     * @return Tile[] Returns an array of Tile objects
 //     */
