@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BoatRepository;
+use App\Service\MapManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,23 +33,41 @@ class BoatController extends AbstractController
     public function moveDirection(
         string $direction, 
         BoatRepository $boatRepository,
-        EntityManagerInterface $entityManager)
+        EntityManagerInterface $entityManager,
+        MapManager $mapManager)
     {
         $boat = $boatRepository->findOneBy([]);
-
+        $directionX = $boat->getCoordX();
+        $directionY = $boat->getCoordY();
 
         switch ($direction) {
             case "N" : 
-                $boat->setCoordY($boat->getCoordY() - 1);
+                if($mapManager->tileExists(($directionX), ($directionY - 1))) {
+                    $boat->setCoordY($directionY - 1);
+                } else {
+                    $this->addFlash("warning", "La tuile n'existe pas");
+                }
                 break;
             case "S" :
-                $boat->setCoordY($boat->getCoordY() + 1);
+                if($mapManager->tileExists(($directionX), ($directionY + 1))) {
+                    $boat->setCoordY($directionY + 1);
+                } else {
+                    $this->addFlash("warning", "La tuile n'existe pas");
+                }
                 break;
             case "E" :
-                $boat->setCoordX($boat->getCoordX() + 1);
+                if($mapManager->tileExists(($directionX + 1), ($directionY))) {
+                    $boat->setCoordX($directionX + 1);
+                } else {
+                    $this->addFlash("warning", "La tuile n'existe pas");
+                }
                 break;
             case "W" :
-                $boat->setCoordX($boat->getCoordX() - 1);
+                if($mapManager->tileExists(($directionX - 1), ($directionY))) {
+                    $boat->setCoordX($directionX - 1);
+                } else {
+                    $this->addFlash("warning", "La tuile n'existe pas");
+                }
                 break;
         }
 
