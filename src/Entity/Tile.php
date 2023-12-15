@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TileRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ORM\Entity(repositoryClass: TileRepository::class)]
 class Tile
@@ -21,6 +22,9 @@ class Tile
 
     #[ORM\Column]
     private ?int $coordY = null;
+
+    #[ORM\Column(options: ['default' => false], nullable: false)]
+    private ?bool $hasTreasure = null;
 
     public function getId(): ?int
     {
@@ -59,6 +63,26 @@ class Tile
     public function setCoordY(int $coordY): self
     {
         $this->coordY = $coordY;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of hasTreasure
+     */ 
+    public function getHasTreasure(): ?bool
+    {
+        return $this->hasTreasure;
+    }
+
+    /**
+     * Set the value of hasTreasure
+     *
+     * @return  self
+     */ 
+    public function setHasTreasure(bool $hasTreasure)
+    {
+        $this->hasTreasure = $hasTreasure;
 
         return $this;
     }
