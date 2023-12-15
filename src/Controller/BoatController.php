@@ -53,21 +53,30 @@ class BoatController extends AbstractController
             case 'N':
                 if($mapManager->tileExists(($x), ($y - 1))) {
                     $boat->setCoordY($boat->getCoordY() - 1);
+                } else {
+                    $this->addFlash("warning", "Tile doesn't exist");
                 }
+
                 break;
             case 'S':
                 if($mapManager->tileExists(($x), ($y + 1))) {
                     $boat->setCoordY($boat->getCoordY() + 1);
+                } else {
+                    $this->addFlash("warning", "Tile doesn't exist");
                 }
                 break;
             case 'E':
                 if($mapManager->tileExists(($x + 1), ($y))) {
                     $boat->setCoordX($boat->getCoordX() + 1);
+                } else {
+                    $this->addFlash("warning", "Tile doesn't exist");
                 }
                 break;
             case 'W':
                 if($mapManager->tileExists(($x - 1), ($y))) {
                     $boat->setCoordX($boat->getCoordX() - 1);
+                } else {
+                    $this->addFlash("warning", "Tile doesn't exist");
                 }
                 break;
         }
