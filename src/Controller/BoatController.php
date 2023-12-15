@@ -19,7 +19,8 @@ class BoatController extends AbstractController
         int $y,
         BoatRepository $boatRepository,
         TileRepository $tileRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MapManager $mapManager,
     ): Response {
         $boat = $boatRepository->findOneBy([]);
         
@@ -27,6 +28,10 @@ class BoatController extends AbstractController
         $boat->setCoordY($y);
 
         $entityManager->flush();
+
+        if($mapManager->checkTreasure($boat)) {
+            $this->addFlash("success", "Le capitaine Jack Sparrow à trouvé le trésor !");
+        }
         
         return $this->redirectToRoute('map');
     }
