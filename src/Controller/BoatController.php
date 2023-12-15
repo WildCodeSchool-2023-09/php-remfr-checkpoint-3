@@ -83,7 +83,12 @@ class BoatController extends AbstractController
         }
         $entityManager->persist($boat);
         $entityManager->flush();
-        
+
+        /** Check for treasure after each moves */
+        if ($this->$mapManager->checkTreasure($boat)) {
+            $this->addFlash('success', 'Congratulations, you found the treasure!');
+        }
+
         return $this->redirectToRoute('map');
     }
 }
