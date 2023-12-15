@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Service\MapManager;
 use App\Repository\BoatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 #[Route('/boat')]
 class BoatController extends AbstractController
@@ -33,11 +35,14 @@ class BoatController extends AbstractController
     public function moveDirection(
         string $direction,
         BoatRepository $boatRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MapManager $mapManager
     ): Response {
 
         /** Recherche les coordonnées actuelles du bateau */
         $boat = $boatRepository->findOneBy([]);
+        $x = $boat->getCoordX();
+        $y = $boat->getCoordY();
         
         if (!$boat) {
             throw $this->createNotFoundException('No boat found');
@@ -46,22 +51,29 @@ class BoatController extends AbstractController
         /** Mise à jour de la position du bateau en se basant sur la direction */
         switch ($direction) {
             case 'N':
-                $boat->setCoordY($boat->getCoordY() - 1);
+                if($mapManager->tileExists(($x), ($y - 1))) {
+                    $boat->setCoordY($boat->getCoordY() - 1);
+                }
                 break;
             case 'S':
-                $boat->setCoordY($boat->getCoordY() + 1);
+                if($mapManager->tileExists(($x), ($y + 1))) {
+                    $boat->setCoordY($boat->getCoordY() + 1);
+                }
                 break;
             case 'E':
-                $boat->setCoordX($boat->getCoordX() + 1);
+                if($mapManager->tileExists(($x + 1), ($y))) {
+                    $boat->setCoordX($boat->getCoordX() + 1);
+                }
                 break;
             case 'W':
-                $boat->setCoordX($boat->getCoordX() - 1);
+                if($mapManager->tileExists(($x - 1), ($y))) {
+                    $boat->setCoordX($boat->getCoordX() - 1);
+                }
                 break;
         }
-
+        $entityManager->persist($boat);
         $entityManager->flush();
         
-        return $this->render('map/index.html.twig', [
-            'boat' => $boat]);
+        return $this->redirectToRoute('map');
     }
 }
